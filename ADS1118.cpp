@@ -65,7 +65,7 @@
 
 
 
-#if defined(__AVR__)
+#if defined(__AVR__) || defined (CORE_TEENSY)
 /**
  * Constructor of the class
  * @param io_pin_cs a byte indicating the pin to be use as the chip select pin (CS)
@@ -85,7 +85,7 @@ ADS1118::ADS1118(uint8_t io_pin_cs, SPIClass *spi) {
 #endif
 
 
-#if defined(__AVR__)
+#if defined(__AVR__) || defined (CORE_TEENSY)
 /**
  * This method initialize the SPI port and the config register
  */
@@ -182,7 +182,7 @@ uint16_t ADS1118::getADCValue(uint8_t inputs) {
 	pSpi->beginTransaction(SPISettings(SCLK, MSBFIRST, SPI_MODE1));
 #endif        
 	digitalWrite(cs, LOW);
-#if defined(__AVR__)	
+#if defined(__AVR__) || defined (CORE_TEENSY)
         dataMSB = SPI.transfer(configRegister.byte.msb);
         dataLSB = SPI.transfer(configRegister.byte.lsb);
         configMSB = SPI.transfer(configRegister.byte.msb);
@@ -266,7 +266,7 @@ double ADS1118::getTemperature() {
 #endif
 	digitalWrite(cs, LOW);
         
-#if defined(__AVR__)	
+#if defined(__AVR__) || defined (CORE_TEENSY)
         dataMSB = SPI.transfer(configRegister.byte.msb);
         dataLSB = SPI.transfer(configRegister.byte.lsb);
         configMSB = SPI.transfer(configRegister.byte.msb);

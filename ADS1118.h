@@ -38,7 +38,7 @@ union Config {
 class ADS1118 {
     public:
         void begin();				///< This method initialize the SPI port and the config register
-#if defined(__AVR__)
+#if defined(__AVR__) || defined(CORE_TEENSY)
         ADS1118(uint8_t io_pin_cs);         ///< Constructor
 #elif defined(ESP32)
         ADS1118(uint8_t io_pin_cs, SPIClass *spi = &SPI); 		///< Constructor
