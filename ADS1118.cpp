@@ -89,12 +89,12 @@ ADS1118::ADS1118(uint8_t io_pin_cs, SPIClass *spi) {
 /**
  * This method initialize the SPI port and the config register
  */
-void ADS1118::begin(uint32_t clock) {
+void ADS1118::begin(uint32_t clock, const Config& config) {
     pinMode(cs, OUTPUT);
     digitalWrite(cs, HIGH);
     SPI.begin();
     SPI.beginTransaction(SPISettings(clock, MSBFIRST, SPI_MODE1));
-    configRegister.bits={RESERVED, VALID_CFG, DOUT_PULLUP, ADC_MODE, RATE_8SPS, SINGLE_SHOT, FSR_0256, DIFF_0_1, START_NOW}; //Default values    
+    configRegister = config; //Default values
     DEBUG_BEGIN(configRegister); //Debug this method: print the config register in the Serial port
 }						///< This method initialize the SPI port and the config register        
 #elif defined(ESP32)
@@ -105,7 +105,7 @@ void ADS1118::begin() {
     pinMode(cs, OUTPUT);
     digitalWrite(cs, HIGH);
     pSpi->begin();
-    configRegister.bits={RESERVED, VALID_CFG, DOUT_PULLUP, ADC_MODE, RATE_8SPS, SINGLE_SHOT, FSR_0256, DIFF_0_1, START_NOW}; //Default values
+    configRegister = DEFAULT_CONFIG; //Default values
     DEBUG_BEGIN(configRegister); //Debug this method: print the config register in the Serial port
 }      
 
@@ -113,7 +113,7 @@ void ADS1118::begin(uint8_t sclk, uint8_t miso, uint8_t mosi) {
     pinMode(cs, OUTPUT);
 	digitalWrite(cs, HIGH);
     pSpi->begin(sclk, miso, mosi, cs);
-	configRegister.bits={RESERVED, VALID_CFG, DOUT_PULLUP, ADC_MODE, RATE_8SPS, SINGLE_SHOT, FSR_0256, DIFF_0_1, START_NOW}; //Default values
+	configRegister = DEFAULT_CONFIG; //Default values
     DEBUG_BEGIN(configRegister); //Debug this method: print the config register in the Serial port
 }
 
