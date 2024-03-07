@@ -336,14 +336,14 @@ void ADS1118::setSingleShotMode(){
  * Disabling the internal pull-up resistor of the DOUT pin
  */
 void ADS1118::disablePullup(){
-    configRegister.bits.operatingMode=DOUT_NO_PULLUP;
+    configRegister.bits.pullUp=DOUT_NO_PULLUP;
 }
 
 /**
  * Enabling the internal pull-up resistor of the DOUT pin
  */
 void ADS1118::enablePullup(){
-    configRegister.bits.operatingMode=DOUT_PULLUP;
+    configRegister.bits.pullUp=DOUT_PULLUP;
 }
 
 /**
