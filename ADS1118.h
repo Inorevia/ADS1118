@@ -36,8 +36,11 @@ union Config {
  * @author Alvaro Salazar <alvaro@denkitronik.com>
  */
 class ADS1118 {
+        //Bit constants
+	static constexpr uint32_t DEFAULT_SCLK       = 2000000;///< ADS1118 SCLK frequency: 4000000 Hz Maximum for ADS1118
+		
     public:
-        void begin();				///< This method initialize the SPI port and the config register
+        void begin(uint32_t clock = DEFAULT_SCLK);				///< This method initialize the SPI port and the config register
 #if defined(__AVR__) || defined(CORE_TEENSY)
         ADS1118(uint8_t io_pin_cs);         ///< Constructor
 #elif defined(ESP32)
@@ -71,9 +74,6 @@ class ADS1118 {
         const uint8_t AIN_3 	  = 0b111;	///< Single ended input: Vin=A3
         union Config configRegister;        ///< Config register
 
-        //Bit constants
-	const uint32_t SCLK       = 2000000;///< ADS1118 SCLK frequency: 4000000 Hz Maximum for ADS1118
-		
 	// Used by "SS" bit
 	const uint8_t START_NOW   = 1;      ///< Start of conversion in single-shot mode
 	

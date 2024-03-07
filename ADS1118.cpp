@@ -89,11 +89,11 @@ ADS1118::ADS1118(uint8_t io_pin_cs, SPIClass *spi) {
 /**
  * This method initialize the SPI port and the config register
  */
-void ADS1118::begin() {
+void ADS1118::begin(uint32_t clock) {
     pinMode(cs, OUTPUT);
     digitalWrite(cs, HIGH);
     SPI.begin();
-    SPI.beginTransaction(SPISettings(SCLK, MSBFIRST, SPI_MODE1));
+    SPI.beginTransaction(SPISettings(clock, MSBFIRST, SPI_MODE1));
     configRegister.bits={RESERVED, VALID_CFG, DOUT_PULLUP, ADC_MODE, RATE_8SPS, SINGLE_SHOT, FSR_0256, DIFF_0_1, START_NOW}; //Default values    
     DEBUG_BEGIN(configRegister); //Debug this method: print the config register in the Serial port
 }						///< This method initialize the SPI port and the config register        
@@ -125,7 +125,7 @@ void ADS1118::begin(uint8_t sclk, uint8_t miso, uint8_t mosi) {
  */
 bool ADS1118::getADCValueNoWait(uint8_t pin_drdy, uint16_t &value) {
     byte dataMSB, dataLSB;	
-	pSpi->beginTransaction(SPISettings(SCLK, MSBFIRST, SPI_MODE1));
+	pSpi->beginTransaction(SPISettings(DEFAULT_SCLK, MSBFIRST, SPI_MODE1));
 	digitalWrite(cs, LOW);
 	if (digitalRead(pin_drdy)) {
 		digitalWrite(cs, HIGH);
@@ -179,7 +179,7 @@ uint16_t ADS1118::getADCValue(uint8_t inputs) {
 	configRegister.bits.mux=inputs;
     do{
 #if defined(ESP32)
-	pSpi->beginTransaction(SPISettings(SCLK, MSBFIRST, SPI_MODE1));
+	pSpi->beginTransaction(SPISettings(DEFAULT_SCLK, MSBFIRST, SPI_MODE1));
 #endif        
 	digitalWrite(cs, LOW);
 #if defined(__AVR__) || defined (CORE_TEENSY)
@@ -262,7 +262,7 @@ double ADS1118::getTemperature() {
 	configRegister.bits.sensorMode=TEMP_MODE; //Sorry but we will have to read twice the sensor
     do{
 #if defined(ESP32)
-	pSpi->beginTransaction(SPISettings(SCLK, MSBFIRST, SPI_MODE1));
+	pSpi->beginTransaction(SPISettings(DEFAULT_SCLK, MSBFIRST, SPI_MODE1));
 #endif
 	digitalWrite(cs, LOW);
         
